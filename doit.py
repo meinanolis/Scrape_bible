@@ -18,28 +18,28 @@ class headline:
         self.text=self.html.text
 
 
-pagepath='1.Mose 1 - Hoffnung für Alle   BibleServer.html'
+pagepath='Quelltexte/01-1Mose1.html'
 
 f=open(pagepath,'r')
 page=f.read()
 f.close()
 
 soup = BeautifulSoup(page, 'html.parser')
+main=soup.find(id='pageMain')
 
-chapter=soup.find('div', class_='chapter')
+chapter=main.find('div', class_='chapter')
 
 verses=list()
 for v in chapter.contents:
     ve=None
-    print(v['class'])
-    if 'caption' in v['class']:
-        print('cap')
-        ce=headline(v)
-    elif 'verse' in v['class']:
-        ce=vers(v)
-        print('vers')
-    verses.append(ce)
-
+    try:
+        if 'caption' in v['class']:
+            ce=headline(v)
+        elif 'verse' in v['class']:
+            ce=vers(v)
+        verses.append(ce)
+    except:
+        pass
 print(len(verses))
 print(verses[0].text)
 
